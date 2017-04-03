@@ -1,10 +1,11 @@
 'use strict'
 
-require('normalize.css/normalize.css')
-require('styles/App.css')
-
 import React from 'react'
 import ReactDOM from 'react-dom'
+import 'normalize.css/normalize.css'
+
+import 'styles/App.css'
+import 'font-awesome/css/font-awesome.min.css'
 
 let imageData = require('json!../images/imageData.json')
 
@@ -41,7 +42,7 @@ class Photo extends React.Component {
     }
 
     render() {
-        var styleObj = {}
+        let styleObj = {}
 
         if (this.props.arrange.pos) {
             styleObj = this.props.arrange.pos
@@ -57,7 +58,7 @@ class Photo extends React.Component {
             styleObj.zIndex = 11
         }
 
-        var imgFigureClassName = 'img-figure'
+        let imgFigureClassName = 'img-figure'
         imgFigureClassName += this.props.arrange.isInverse ? ' is-inverse' : ''
 
         return (
@@ -94,7 +95,7 @@ class ControllerUnit extends React.Component {
     }
 
     render() {
-        var controllerUnitClassName = 'controller-unit';
+        let controllerUnitClassName = 'controller-unit';
         if (this.props.arrange.isCenter) {
             controllerUnitClassName += ' is-center'
             if (this.props.arrange.isInverse) {
@@ -102,7 +103,7 @@ class ControllerUnit extends React.Component {
             }
         }
         return (
-            <span className={controllerUnitClassName} onClick={this.handleClick}></span>
+            <span className={controllerUnitClassName} onClick={this.handleClick}><i className='fa fa-repeat'></i></span>
         )
     }
 }
@@ -133,7 +134,7 @@ class AppComponent extends React.Component {
 
     inverse(index) {
         return function() {
-            var imgsArrangeArr = this.state.imgsArrangeArr
+            let imgsArrangeArr = this.state.imgsArrangeArr
             imgsArrangeArr[index].isInverse = !imgsArrangeArr[index].isInverse
 
             this.setState({
@@ -142,8 +143,17 @@ class AppComponent extends React.Component {
         }.bind(this)
     }
 
+    inverse1(index) {
+        let imgsArrangeArr = this.state.imgsArrangeArr
+        imgsArrangeArr[index].isInverse = !imgsArrangeArr[index].isInverse
+
+        this.setState({
+            imgsArrangeArr: imgsArrangeArr
+        })
+    }
+
     rearrange(centerIndex) {
-        var imgsArrangeArr = this.state.imgsArrangeArr,
+        let imgsArrangeArr = this.state.imgsArrangeArr,
             constant = this.constant,
             centerPos = constant.centerPos,
             horizontalPosRange = constant.horizontalPosRange,
@@ -182,8 +192,8 @@ class AppComponent extends React.Component {
             }
         })
 
-        for (var i = 0, len = imgsArrangeArr.length; i < len; i++) {
-            var horizontalPosRangeLORX = null
+        for (let i = 0, len = imgsArrangeArr.length; i < len; i++) {
+            let horizontalPosRangeLORX = null
 
             if (i < len / 2) {
                 horizontalPosRangeLORX = horizontalPosRangeLeftSecX
@@ -219,13 +229,13 @@ class AppComponent extends React.Component {
     }
 
     componentDidMount() {
-        var stageDOM = this.refs.stage,
+        let stageDOM = this.refs.stage,
             stageWidth = stageDOM.scrollWidth,
             stageHeight = stageDOM.scrollHeight,
             halfStageWidth = Math.floor(stageWidth / 2),
             halfStageHeight = Math.floor(stageHeight / 2)
 
-        var imgFigureDOM = ReactDOM.findDOMNode(this.refs.imgFigure0),
+        let imgFigureDOM = ReactDOM.findDOMNode(this.refs.imgFigure0),
             imgWidth = imgFigureDOM.scrollWidth,
             imgHeight = imgFigureDOM.scrollHeight,
             halfImgWidth = Math.floor(imgWidth / 2),
@@ -252,7 +262,7 @@ class AppComponent extends React.Component {
     }
 
     render() {
-        var photos = [],
+        let photos = [],
             controllerUnits = []
 
         imageData.forEach(function(value, index) {
@@ -268,7 +278,8 @@ class AppComponent extends React.Component {
                 }
             }
             photos.push(<Photo key={index} data={value} ref={'imgFigure' + index}
-                arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)}
+                arrange={this.state.imgsArrangeArr[index]} inverse1={this.inverse(index)}
+                inverse={() => this.inverse1(index)}
                 center={this.center(index)} />)
 
             controllerUnits.push(<ControllerUnit key={index}
