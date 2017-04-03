@@ -1,17 +1,14 @@
-'use strict'
-
 import React from 'react'
 import ReactDOM from 'react-dom'
-import 'normalize.css/normalize.css'
 
-import 'styles/App.css'
+import './App.css'
 import 'font-awesome/css/font-awesome.min.css'
 
-let imageData = require('json!../images/imageData.json')
+let imageData = require('./images/imageData.json')
 
 imageData = (function genImageURL(imageDataList) {
     imageDataList.forEach(function(singleImageData) {
-        singleImageData.imageURL = require('../images/' + singleImageData.fileName)
+        singleImageData.imageURL = require('./images/' + singleImageData.fileName)
     })
     return imageDataList
 })(imageData)
